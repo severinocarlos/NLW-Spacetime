@@ -1,30 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
 import { useRouter } from "expo-router";
-import { ImageBackground, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
-import {
-  useFonts,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto'
 
-import {
-  BaiJamjuree_700Bold
-} from '@expo-google-fonts/bai-jamjuree'
-
-import blurBg from '../src/assets/luz.png'
-import Stripes from '../src/assets/stripes.svg'
 import NLWLogo from '../src/assets/nlw-spacetime-logo.svg'
-import { styled } from 'nativewind'
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import { useEffect } from 'react';
 import { api } from '../src/lib/api';
 
-const StyleStripes = styled(Stripes)
 
 export default function App() {
-    const router = useRouter()
+  const router = useRouter()
 
   const discovery = {
     authorizationEndpoint: 'https://github.com/login/oauth/authorize',
@@ -32,11 +18,7 @@ export default function App() {
     revocationEndpoint: 'https://github.com/settings/connections/applications/02a7b57d61c4075cb7af',
   };
 
-  const [hasLoadedFonts] = useFonts({
-    Roboto_400Regular,
-    Roboto_700Bold,
-    BaiJamjuree_700Bold
-  })
+ 
 
   const [, response, SignInWithGithub] = useAuthRequest(
     {
@@ -76,50 +58,40 @@ export default function App() {
     }
   }, [response]);
 
-  if (!hasLoadedFonts) {
-    return null
-  }
+  
 
   return (
-    <ImageBackground 
-      source={blurBg} 
-      className='relative bg-gray-900 flex-1 items-center px-10 py-10'
-      imageStyle={{ position: 'absolute', left: '-100%'}}
-    >
-     
-    <StyleStripes className='absolute left-2' />
+    <View className=' flex-1 items-center px-8 py-10'>
+      <View className="flex-1 items-center justify-center gap-6">
+        <NLWLogo />
+        
+        <View className='space-y-2'>
+          <Text className='text-center font-title text-2xl leading-tight text-gray-50'>
+            Sua cápsula do tempo
+          </Text>
+          <Text className='text-center font-body text-base leading-relaxed text-gray-100'>
+            Colecione momentos marcantes da sua jornada e compartilhe (se quiser) 
+            com o mundo!
+          </Text>
+        </View>
 
-    <View className="flex-1 items-center justify-center gap-6">
-      <NLWLogo />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          className='rounded-full bg-green-500 px-5 py-3'
+          onPress={() => SignInWithGithub()}
+        >
+          <Text className='font-alt text-sm uppercase text-black'>
+            Cadastrar lembrança
+          </Text>
+        </TouchableOpacity>
       
-      <View className='space-y-2'>
-        <Text className='text-center font-title text-2xl leading-tight text-gray-50'>
-          Sua cápsula do tempo
-        </Text>
-        <Text className='text-center font-body text-base leading-relaxed text-gray-100'>
-          Colecione momentos marcantes da sua jornada e compartilhe (se quiser) 
-          com o mundo!
-        </Text>
       </View>
 
-      <TouchableOpacity
-      activeOpacity={0.7}
-      className='rounded-full bg-green-500 px-5 py-3'
-      onPress={() => SignInWithGithub()}
-      >
-        <Text className='font-alt text-sm uppercase text-black'>
-          Cadastrar lembrança
-        </Text>
-      </TouchableOpacity>
-     
+      <Text className='text-center font-body text-sm leading-relaxed text-gray-200'>
+        Feito com 💜 no NLW da Rocketseat
+      </Text>
+
     </View>
-
-    <Text className='text-center font-body text-sm leading-relaxed text-gray-200'>
-      Feito com 💜 no NLW da Rocketseat
-    </Text>
-
-    <StatusBar style="light" translucent/>
-    </ImageBackground>
   );
 }
 
