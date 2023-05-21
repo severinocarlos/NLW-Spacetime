@@ -1,7 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { z } from 'zod'
 import { prisma } from "../lib/prisma";
-import { REPL_MODE_SLOPPY } from "repl";
 
 export async function memoriesRoutes(app: FastifyInstance) {
     app.addHook('preHandler', async (request) => {
